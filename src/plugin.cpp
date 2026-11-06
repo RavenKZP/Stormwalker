@@ -1,16 +1,19 @@
 #include "logger.h"
 
+#include "Manager.h"
+#include "MCP.h"
+#include "Hooks.h"
+#include "Settings.h"
+
 void OnMessage(SKSE::MessagingInterface::Message* message) {
     if (message->type == SKSE::MessagingInterface::kDataLoaded) {
-        // Start
-    }
-    if (message->type == SKSE::MessagingInterface::kNewGame || message->type == SKSE::MessagingInterface::kPostLoadGame) {
-        // Post-load
+        Settings::GetSingleton(); // Init
+        Stormwalker::Manager::GetSingleton();  // Init
+        Hooks::InstallHooks();
     }
 }
 
 SKSEPluginLoad(const SKSE::LoadInterface *skse) {
-
     SetupLog();
     logger::info("Plugin loaded");
     SKSE::Init(skse);
